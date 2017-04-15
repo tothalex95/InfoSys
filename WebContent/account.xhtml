@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+
+<h:body>
+	<ui:composition template="templates/template.xhtml">
+		<ui:define name="content">
+
+			<h:form id="accountForm">
+				<p:growl id="message" showDetail="true" />
+				<p:panel header="Számlanyitás">
+					<p:panelGrid columns="3" class="ui-noborder">
+						<h:outputText for="owner" value="Számlatulajdonos:" />
+						<p:selectOneMenu converter="#{clientConverter}" id="owner"
+							value="#{accountAddView.account.client}">
+							<f:selectItems value="#{accountAddView.clients}" />
+						</p:selectOneMenu>
+						<p:message for="owner" />
+
+						<h:outputText for="balance" value="Nyitóegyenleg:" />
+						<p:inputNumber id="balance"
+							value="#{accountAddView.account.balance}" symbol=" HUF"
+							symbolPosition="s" decimalSeparator="," thousandSeparator="."
+							minValue="0">
+							<p:ajax update="balance" />
+						</p:inputNumber>
+						<p:message for="balance" />
+					</p:panelGrid>
+					<p:commandButton value="Mentés" ajax="false" icon="ui-icon-check"
+						validateClient="true" actionListener="#{accountAddView.onSubmit}"
+						update=":accountForm:message" action="accountManagement.xhtml" />
+				</p:panel>
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+</h:head>
+
+<h:body>
+	<ui:composition template="templates/template.xhtml">
+		<ui:define name="content">
+
+			<h:form id="clientForm">
+				<p:growl id="message" showDetail="true" />
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText for="type" value="Mi alapján szeretne keresni?" />
+						<p:selectOneMenu id="type" value="#{clientView.searchType}">
+							<f:selectItem itemLabel="" itemValue="0" />
+							<f:selectItem itemLabel="Ügyfélszám" itemValue="1" />
+							<f:selectItem itemLabel="Személyi igazolványszám" itemValue="2" />
+							<f:selectItem itemLabel="Név" itemValue="3" />
+						</p:selectOneMenu>
+						<h:outputText for="pattern" value="Keresendő:" />
+						<p:inputText id="pattern" value="#{clientView.pattern}" />
+						<p:commandButton
+							actionListener="#{clientView.onSearchButtonClick}" ajax="false"
+							icon="ui-icon-search" value="Keresés"
+							update=":clientForm:clientTable" />
+					</f:facet>
+				</p:toolbar>
+				<p:dataTable id="clientTable" var="client"
+					value="#{clientView.clients}"
+					emptyMessage="Nem találhatók ügyfelek." editable="true">
+					<f:facet name="header">
+						<h:outputText value="Ügyfelek" />
+					</f:facet>
+
+					<p:ajax event="rowEdit" listener="#{clientView.onRowEdit}"
+						update=":clientForm:message" />
+					<p:ajax event="rowEditCancel"
+						listener="#{clientView.onRowEditCancel}"
+						update=":clientForm:message" />
+
+					<p:column headerText="Ügyfélszám">
+						<h:outputText value="#{client.clientId}" />
+					</p:column>
+					<p:column headerText="Név">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{client.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:inputText value="#{client.name}">
+									<!-- <f:validateLength minimum="2" maximum="50" /> -->
+								</h:inputText>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Lakcím">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{client.address}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:inputText value="#{client.address}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Telefonszám">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{client.phoneNumber}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputMask value="#{client.phoneNumber}" mask="(99)-999-9999" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Személyi igazolványszám">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{client.personalId}"
+									style="text-transform: uppercase;" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputMask value="#{client.personalId}" mask="999999aa"
+									style="text-transform: uppercase;" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Állapot">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{client.status.toString() == 'ACTIVE' ? 'Aktív' : 'Törölt'}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:selectOneListbox value="#{client.status}">
+									<f:selectItem itemLabel="Aktív" itemValue="ACTIVE" />
+									<f:selectItem itemLabel="Törölt" itemValue="DELETED" />
+								</p:selectOneListbox>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Módosítás">
+						<p:rowEditor />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+
+<h:body>
+	<ui:composition template="templates/template.xhtml">
+		<ui:define name="content">
+
+			<h:form id="clientForm">
+				<p:growl id="message" showDetail="true" />
+				<p:panel header="Új ügyfél létrehozása">
+					<p:panelGrid columns="3" class="ui-noborder">
+						<p:outputLabel for="name" value="Név: " />
+						<p:inputText id="name" value="${clientAddView.client.name}">
+							<!-- <f:validateLength minimum="2" maximum="50" /> -->
+						</p:inputText>
+						<p:message for="name" />
+
+						<p:outputLabel for="address" value="Lakcím: " />
+						<p:inputText id="address" value="${clientAddView.client.address}" />
+						<p:message for="address" />
+
+						<p:outputLabel for="phoneNumber" value="Telefonszám: " />
+						<p:inputMask id="phoneNumber"
+							value="${clientAddView.client.phoneNumber}" mask="(99)-999-9999" />
+						<p:message for="phoneNumber" />
+
+						<p:outputLabel for="personalId" value="Személyi igazolványszám: " />
+						<p:inputMask id="personalId"
+							value="${clientAddView.client.personalId}" mask="999999aa"
+							style="text-transform: uppercase;" />
+						<p:message for="personalId" />
+					</p:panelGrid>
+					<p:commandButton value="Mentés" ajax="false" icon="ui-icon-check"
+						validateClient="true" actionListener="#{clientAddView.onSubmit}"
+						update=":clientForm:message" action="clientManagement.xhtml" />
+				</p:panel>
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

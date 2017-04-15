@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+
+<h:body>
+	<ui:composition template="templates/template.xhtml">
+		<ui:define name="content">
+
+			<h:form id="accountForm">
+				<p:growl id="message" showDetail="true" />
+
+				<p:dataTable id="accountTable" var="account"
+					value="#{accountView.accounts}"
+					emptyMessage="Nem találhatók számlák." editable="true">
+
+					<f:facet name="header">
+						<h:outputText value="Számlák" />
+					</f:facet>
+
+					<p:ajax event="rowEdit" listener="#{accountView.onRowEdit}"
+						update=":accountForm:message" />
+					<p:ajax event="rowEditCancel"
+						listener="#{accountView.onRowEditCancel}"
+						update=":accountForm:message" />
+
+					<p:column headerText="Számlatulajdonos">
+						<h:outputText id="client" value="#{account.client.clientId}" />
+						<p:tooltip for="client" value="#{account.client}" showEffect="clip" hideEffect="explode" position="right" />
+					</p:column>
+
+					<p:column headerText="Számlaszám">
+						<h:outputText value="#{account.client.clientId}-#{account.sequenceNumber}" />
+					</p:column>
+
+					<p:column headerText="Egyenleg">
+						<h:outputText value="#{account.balance}">
+							<f:convertNumber currencyCode="HUF" type="currency" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Állapot">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{account.closed ? 'Zárolt' : 'Nyitott'}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:selectOneRadio value="#{account.closed}">
+									<f:selectItem itemLabel="Nyitott" itemValue="false" />
+									<f:selectItem itemLabel="Zárolt" itemValue="true" />
+								</p:selectOneRadio>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Módosítás">
+						<p:rowEditor />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

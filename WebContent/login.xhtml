@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+
+<h:body>
+	<ui:composition template="templates/template.xhtml">
+		<ui:define name="content">
+		
+			<p:dialog id="dialog" header="Belépés" width="400" widgetVar="dlg"
+				visible="true" closable="false" draggable="false" resizable="false"
+				style="box-shadow: 7px 10px 5px #303030;">
+				<h:form>
+					<p:panelGrid columns="2" cellpadding="5" style="margin: 0 auto">
+						<h:outputLabel for="username" value="Felhasználó" />
+						<h:inputText id="username" value="#{auth.username}" />
+						<h:outputLabel for="password" value="Jelszó" />
+						<h:inputSecret id="password" value="#{auth.password}" />
+						<h:commandButton value="Belép" action="#{auth.login}" />
+						<h:messages globalOnly="true" />
+					</p:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			<!-- <form action="j_security_check" method="post">
+				<label for="username">Felhasználó:</label>
+				<input id="username" type="text" name="j_username" />
+				<label for="password">Jelszó:</label>
+				<input id="password" type="password" name="j_password" />
+				<input type="submit" value="Belépés" />
+			</form> -->
+		
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+
+<h:body>
+	<ui:composition template="templates/template.xhtml">
+		<ui:define name="content">
+
+			<h:form id="paymentForm">
+				<p:growl id="message" showDetail="true" />
+				<p:panel header="Pénztári kifizetés">
+					<p:panelGrid columns="3" class="ui-noborder">
+						<h:outputText for="client" value="Számlatulajdonos:" />
+						<p:selectOneMenu converter="#{clientConverter}" id="client"
+							value="#{paymentView.client}">
+							<p:ajax update="account" listener="#{paymentView.onValueChange}" />
+							<f:selectItems value="#{paymentView.clients}" />
+						</p:selectOneMenu>
+						<p:message for="client" />
+
+						<h:outputText for="account" value="Számla:" />
+						<p:selectOneMenu converter="#{accountConverter}" id="account"
+							value="#{paymentView.account}">
+							<f:selectItems value="#{paymentView.accounts}" />
+						</p:selectOneMenu>
+						<p:message for="account" />
+
+						<h:outputText for="amount" value="Összeg:" />
+						<p:inputNumber id="amount" value="#{paymentView.amount}"
+							symbol=" HUF" symbolPosition="s" decimalSeparator=","
+							thousandSeparator="." minValue="0">
+							<p:ajax update="amount" />
+							<p:watermark for="amount" value="0,00 HUF" />
+						</p:inputNumber>
+						<p:message for="amount" />
+
+						<h:outputText for="comment" value="Megjegyzés:" />
+						<p:inputTextarea id="comment" value="#{paymentView.comment}" />
+						<p:message for="comment" />
+					</p:panelGrid>
+					<p:commandButton value="Kifizetés" ajax="false"
+						icon="ui-icon-check" validateClient="true"
+						actionListener="#{paymentView.onSubmit2}"
+						update=":paymentForm:message" action="accountManagement.xhtml" />
+				</p:panel>
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

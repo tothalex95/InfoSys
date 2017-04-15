@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+
+<h:body>
+	<ui:composition template="templates/template.xhtml">
+		<ui:define name="content">
+
+			<h:form id="transactionForm">
+				<p:growl id="message" showDetail="true" />
+
+				<p:dataTable id="transactionTable" var="transaction"
+					value="#{transactionView.transactions}"
+					emptyMessage="Nem találhatók tranzakciók." editable="true">
+
+					<f:facet name="header">
+						<h:outputText value="Tranzakciók" />
+					</f:facet>
+
+					<p:column headerText="Forrás számla">
+						<h:outputText id="account" value="#{transaction.account == null ? '' : (transaction.account.client.clientId.toString().concat('-').concat(transaction.account.sequenceNumber.toString()))}" />
+						<p:tooltip for="account" value="#{transaction.account}" showEffect="clip" hideEffect="explode" position="right" />
+					</p:column>
+
+					<p:column headerText="Összeg">
+						<h:outputText value="#{transaction.amount}">
+							<f:convertNumber currencyCode="HUF" type="currency" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Megjegyzés">
+						<h:outputText value="#{transaction.comment}" />
+					</p:column>
+
+					<p:column headerText="Időpont">
+						<h:outputText value="#{transaction.date}">
+							<f:convertDateTime pattern="yyyy.MM.dd. HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Cél számla">
+						<h:outputText id="addressee" value="#{transaction.addressee == null ? '' : (transaction.addressee.client.clientId.toString().concat('-').concat(transaction.addressee.sequenceNumber.toString()))}" />
+						<p:tooltip for="addressee" value="#{transaction.addressee}" showEffect="clip" hideEffect="explode" position="left" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

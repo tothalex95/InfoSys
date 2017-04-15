@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+
+<h:body>
+	<ui:composition template="templates/template.xhtml">
+		<ui:define name="content">
+
+			<h:form id="transferForm">
+				<p:growl id="message" showDetail="true" />
+				<p:panel header="Átutalás">
+					<p:panelGrid columns="3" class="ui-noborder">
+						<h:outputText for="client1" value="Forrás számla tulajdonosa:" />
+						<p:selectOneMenu converter="#{clientConverter}" id="client1"
+							value="#{transferView.ownerOfSourceAccount}">
+							<p:ajax update="account1"
+								listener="#{transferView.onValueChange}" />
+							<f:selectItems value="#{transferView.clients}" />
+						</p:selectOneMenu>
+						<p:message for="client1" />
+
+						<h:outputText for="account1" value="Forrás számla:" />
+						<p:selectOneMenu converter="#{accountConverter}" id="account1"
+							value="#{transferView.sourceAccount}">
+							<f:selectItems value="#{transferView.sourceAccounts}" />
+						</p:selectOneMenu>
+						<p:message for="account1" />
+
+						<h:outputText for="client2" value="Cél számla tulajdonosa:" />
+						<p:selectOneMenu converter="#{clientConverter}" id="client2"
+							value="#{transferView.ownerOfDestinationAccount}">
+							<p:ajax update="account2"
+								listener="#{transferView.onValueChange}" />
+							<f:selectItems value="#{transferView.clients}" />
+						</p:selectOneMenu>
+						<p:message for="client2" />
+
+						<h:outputText for="account2" value="Cél számla:" />
+						<p:selectOneMenu converter="#{accountConverter}" id="account2"
+							value="#{transferView.destinationAccount}">
+							<f:selectItems value="#{transferView.destinationAccounts}" />
+						</p:selectOneMenu>
+						<p:message for="account2" />
+
+						<h:outputText for="amount" value="Átutalandó összeg:" />
+						<p:inputNumber id="amount" value="#{transferView.amount}"
+							symbol=" HUF" symbolPosition="s" decimalSeparator=","
+							thousandSeparator="." minValue="0">
+							<p:ajax update="amount" />
+							<p:watermark for="amount" value="0,00 HUF" />
+						</p:inputNumber>
+						<p:message for="amount" />
+
+						<h:outputText for="comment" value="Megjegyzés:" />
+						<p:inputTextarea id="comment" value="#{transferView.comment}" />
+						<p:message for="comment" />
+					</p:panelGrid>
+					<p:commandButton value="Átutalás" ajax="false" icon="ui-icon-check"
+						validateClient="true" actionListener="#{transferView.onSubmit}"
+						update=":transferForm:message" action="accountManagement.xhtml" />
+				</p:panel>
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>
