@@ -21,6 +21,8 @@ import lombok.Setter;
 @ManagedBean
 public class AccountView {
 
+	private boolean closed;
+	
 	private Account account;
 	private List<Account> accounts;
 	
@@ -29,7 +31,7 @@ public class AccountView {
 	
 	@PostConstruct
 	public void init() {
-		accounts = service.getAccounts();
+		accounts = service.getAccountsByClosed(false);
 	}
 	
 	public void onRowEdit(RowEditEvent event) {
@@ -49,6 +51,13 @@ public class AccountView {
 		Account a = (Account) event.getObject();
 		FacesMessage msg = new FacesMessage("Megszakítva!", a.toString());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
+	public void onValueChange() {
+		if (closed)
+			accounts = service.getAccounts();
+		else
+			accounts = service.getAccountsByClosed(false);
 	}
 	
 }

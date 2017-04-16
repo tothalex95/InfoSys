@@ -12,6 +12,11 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @ManagedBean
 @ViewScoped
 public class Auth {
@@ -54,30 +59,6 @@ public class Auth {
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		externalContext.invalidateSession();
 		externalContext.redirect(externalContext.getRequestContextPath() + "/faces/login.xhtml");
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getOriginalURL() {
-		return originalURL;
-	}
-
-	public void setOriginalURL(String originalURL) {
-		this.originalURL = originalURL;
 	}
 
 }

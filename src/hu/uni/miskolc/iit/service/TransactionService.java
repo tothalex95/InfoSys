@@ -1,6 +1,9 @@
 package hu.uni.miskolc.iit.service;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
@@ -47,6 +50,82 @@ public class TransactionService {
 	
 	public List<Transaction> getTransactions() {
 		return transactionDao.findAll();
+	}
+	
+	public List<Transaction> getTransactionsByAccountNumber(String accountNumber) {
+		return transactionDao.findByAccountNumber(accountNumber);
+	}
+	
+	public List<Transaction> getTransactionsByAmount(Float amount) {
+		return transactionDao.findByAmount(amount);
+	}
+	
+	public List<Transaction> getTransactionsByEarliestDate(String earliest) throws ParseException {
+		Date earliestDate = Transaction.DF.parse(earliest);
+		return transactionDao.findAll().stream().filter(t -> t.getDate().after(earliestDate)).collect(Collectors.toList());
+	}
+	
+	public List<Transaction> getTransactionsByLatestDate(String latest) throws ParseException {
+		Date latestDate = Transaction.DF.parse(latest);
+		return transactionDao.findAll().stream().filter(t -> t.getDate().before(latestDate)).collect(Collectors.toList());
+	}
+	
+	public List<Transaction> getTransactionsByAccountNumberAndAmount(String accountNumber, Float amount) {
+		return transactionDao.findByAccountNumberAndAmount(accountNumber, amount);
+	}
+	
+	public List<Transaction> getTransactionsByAccountNumberAndEarliestDate(String accountNumber, String earliest) throws ParseException {
+		Date earliestDate = Transaction.DF.parse(earliest);
+		return transactionDao.findByAccountNumber(accountNumber).stream().filter(t -> t.getDate().after(earliestDate)).collect(Collectors.toList());
+	}
+	
+	public List<Transaction> getTransactionsByAccountNumberAndLatestDate(String accountNumber, String latest) throws ParseException {
+		Date latestDate = Transaction.DF.parse(latest);
+		return transactionDao.findByAccountNumber(accountNumber).stream().filter(t -> t.getDate().before(latestDate)).collect(Collectors.toList());
+	}
+	
+	public List<Transaction> getTransactionsByAmountAndEarliestDate(Float amount, String earliest) throws ParseException {
+		Date earliestDate = Transaction.DF.parse(earliest);
+		return transactionDao.findByAmount(amount).stream().filter(t -> t.getDate().after(earliestDate)).collect(Collectors.toList());
+	}
+	
+	public List<Transaction> getTransactionsByAmountAndLatestDate(Float amount, String latest) throws ParseException {
+		Date latestDate = Transaction.DF.parse(latest);
+		return transactionDao.findByAmount(amount).stream().filter(t -> t.getDate().before(latestDate)).collect(Collectors.toList());
+	}
+	
+	public List<Transaction> getTransactionsByEarliestDateAndLatestDate(String earliest, String latest) throws ParseException {
+		Date earliestDate = Transaction.DF.parse(earliest);
+		Date latestDate = Transaction.DF.parse(latest);
+		return transactionDao.findAll().stream().filter(t -> t.getDate().after(earliestDate) && t.getDate().before(latestDate)).collect(Collectors.toList());
+	}
+	
+	public List<Transaction> getTransactionsByAccountNumberAndAmountAndEarliestDate(String accountNumber, Float amount, String earliest) throws ParseException {
+		Date earliestDate = Transaction.DF.parse(earliest);
+		return transactionDao.findByAccountNumberAndAmount(accountNumber, amount).stream().filter(t -> t.getDate().after(earliestDate)).collect(Collectors.toList());
+	}
+	
+	public List<Transaction> getTransactionsByAccountNumberAndAmountAndLatestDate(String accountNumber, Float amount, String latest) throws ParseException {
+		Date latestDate = Transaction.DF.parse(latest);
+		return transactionDao.findByAccountNumberAndAmount(accountNumber, amount).stream().filter(t -> t.getDate().before(latestDate)).collect(Collectors.toList());
+	}
+	
+	public List<Transaction> getTransactionsByAccountNumberAndEarliestDateAndLatestDate(String accountNumber, String earliest, String latest) throws ParseException {
+		Date earliestDate = Transaction.DF.parse(earliest);
+		Date latestDate = Transaction.DF.parse(latest);
+		return transactionDao.findByAccountNumber(accountNumber).stream().filter(t -> t.getDate().after(earliestDate) && t.getDate().before(latestDate)).collect(Collectors.toList());
+	}
+	
+	public List<Transaction> getTransactionsByAmountAndEarliestDateAndLatestDate(Float amount, String earliest, String latest) throws ParseException {
+		Date earliestDate = Transaction.DF.parse(earliest);
+		Date latestDate = Transaction.DF.parse(latest);
+		return transactionDao.findByAmount(amount).stream().filter(t -> t.getDate().after(earliestDate) && t.getDate().before(latestDate)).collect(Collectors.toList());
+	}
+	
+	public List<Transaction> getTransactionsByAccountNumberAndAmountAndEarliestDateAndLatestDate(String accountNumber, Float amount, String earliest, String latest) throws ParseException {
+		Date earliestDate = Transaction.DF.parse(earliest);
+		Date latestDate = Transaction.DF.parse(latest);
+		return transactionDao.findByAccountNumberAndAmount(accountNumber, amount).stream().filter(t -> t.getDate().after(earliestDate) && t.getDate().before(latestDate)).collect(Collectors.toList());
 	}
 	
 }

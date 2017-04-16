@@ -3,6 +3,7 @@ package hu.uni.miskolc.iit.persist;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.ResourceIterator;
+import org.neo4j.graphdb.Result;
 
 import hu.uni.miskolc.iit.model.Account;
 import hu.uni.miskolc.iit.model.Transaction;
@@ -90,6 +92,52 @@ public class TransactionDAO implements DAO<Transaction> {
 			tx.success();
 		}
 		return transaction;
+	}
+	
+	public List<Transaction> findByAccountNumber(String accountNumber) {
+		List<Transaction> transactions = new ArrayList<>();
+		try (org.neo4j.graphdb.Transaction tx = DB.beginTx()) {
+			String query = "MATCH (t:" + TRANSACTION_LABEL + ")-->(a:" + AccountDAO.ACCOUNT_LABEL + ")-[:BELONGS_TO]->(c:" + ClientDAO.CLIENT_LABEL + ") WHERE (c.clientId + '-' + a.sequenceNumber) CONTAINS {accountNumber} RETURN t";
+			Map<String, Object> params = new HashMap<>();
+			params.put("accountNumber", accountNumber);
+			Result result = DB.execute(query, params);
+			while (result.hasNext()) {
+				Map<String, Object> props = result.next();
+				transactions.add(nodeToObject((Node) props.entrySet().iterator().next().getValue()));
+			}
+		}
+		return transactions;
+	}
+	
+	public List<Transaction> findByAmount(Float amount) {
+		List<Transaction> transactions = new ArrayList<>();
+		try (org.neo4j.graphdb.Transaction tx = DB.beginTx()) {
+			String query = "MATCH (t:" + TRANSACTION_LABEL + ") WHERE ABS(t.amount) = {amount} RETURN t";
+			Map<String, Object> params = new HashMap<>();
+			params.put("amount", amount);
+			Result result = DB.execute(query, params);
+			while (result.hasNext()) {
+				Map<String, Object> props = result.next();
+				transactions.add(nodeToObject((Node) props.entrySet().iterator().next().getValue()));
+			}
+		}
+		return transactions;
+	}
+	
+	public List<Transaction> findByAccountNumberAndAmount(String accountNumber, Float amount) {
+		List<Transaction> transactions = new ArrayList<>();
+		try (org.neo4j.graphdb.Transaction tx = DB.beginTx()) {
+			String query = "MATCH (t:" + TRANSACTION_LABEL + ")-->(a:" + AccountDAO.ACCOUNT_LABEL + ")-[:BELONGS_TO]->(c:" + ClientDAO.CLIENT_LABEL + ") WHERE (c.clientId + '-' + a.sequenceNumber) CONTAINS {accountNumber} AND ABS(t.amount) = {amount} RETURN t";
+			Map<String, Object> params = new HashMap<>();
+			params.put("accountNumber", accountNumber);
+			params.put("amount", amount);
+			Result result = DB.execute(query, params);
+			while (result.hasNext()) {
+				Map<String, Object> props = result.next();
+				transactions.add(nodeToObject((Node) props.entrySet().iterator().next().getValue()));
+			}
+		}
+		return transactions;
 	}
 	
 	private Account findRelatedAccount(Node transactionNode, RelationshipType rType) {

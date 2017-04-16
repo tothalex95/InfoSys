@@ -13,6 +13,15 @@
 
 			<h:form id="accountForm">
 				<p:growl id="message" showDetail="true" />
+				
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText for="closed" value="Zárolt számlák megjelenítése:" />
+						<p:selectBooleanCheckbox id="closed" value="#{accountView.closed}">
+							<p:ajax update=":accountForm:accountTable" listener="#{accountView.onValueChange}" />
+						</p:selectBooleanCheckbox>
+					</f:facet>
+				</p:toolbar>
 
 				<p:dataTable id="accountTable" var="account"
 					value="#{accountView.accounts}"

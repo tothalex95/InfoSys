@@ -13,6 +13,27 @@
 
 			<h:form id="transactionForm">
 				<p:growl id="message" showDetail="true" />
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText for="accountNumber" value="Számlaszám:" />
+						<p:inputText id="accountNumber" value="${transactionView.accountNumber}" />
+						<h:outputText for="amount" value="Összeg:" />
+						<p:inputNumber id="amount" value="#{transactionView.amount}"
+							symbol=" HUF" symbolPosition="s" decimalSeparator=","
+							thousandSeparator="." minValue="0">
+							<p:ajax update="amount" />
+							<p:watermark for="amount" value="0,00 HUF" />
+						</p:inputNumber>
+						<h:outputText for="earliest" value="Legkorábbi:" />
+						<p:inputMask id="earliest" value="#{transactionView.earliest}" mask="9999.99.99. 99:99:99" />
+						<h:outputText for="latest" value="Legkésőbbi:" />
+						<p:inputMask id="latest" value="#{transactionView.latest}" mask="9999.99.99. 99:99:99" />
+						<p:commandButton
+							actionListener="${transactionView.onSearchButtonClick}" ajax="false"
+							icon="ui-icon-search" value="Keresés"
+							update=":transactionForm:transactionTable" />
+					</f:facet>
+				</p:toolbar>
 
 				<p:dataTable id="transactionTable" var="transaction"
 					value="#{transactionView.transactions}"
@@ -39,7 +60,7 @@
 
 					<p:column headerText="Időpont">
 						<h:outputText value="#{transaction.date}">
-							<f:convertDateTime pattern="yyyy.MM.dd. HH:mm:ss" />
+							<f:convertDateTime pattern="yyyy.MM.dd. HH:mm:ss" timeZone="Europe/Budapest" />
 						</h:outputText>
 					</p:column>
 
