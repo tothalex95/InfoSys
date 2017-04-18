@@ -45,7 +45,14 @@
 
 					<p:column headerText="Forrás számla">
 						<h:outputText id="account" value="#{transaction.account == null ? '' : (transaction.account.client.clientId.toString().concat('-').concat(transaction.account.sequenceNumber.toString()))}" />
-						<p:tooltip for="account" value="#{transaction.account}" showEffect="clip" hideEffect="explode" position="right" />
+						<p:tooltip for="account" value="" showEffect="puff" hideEffect="explode" position="right">
+							<h:outputText value="Számlaszám: #{transaction.account == null ? '' : (transaction.account.client.clientId.toString().concat('-').concat(transaction.account.sequenceNumber.toString()))}" /><br />
+							<h:outputText value="Számlatulajdonos: #{transaction.account == null ? '' : transaction.account.client.name}" /><br />
+							<h:outputText value="Egyenleg: " />
+							<h:outputText value="#{transaction.account == null ? 0.0 : transaction.account.balance}">
+								<f:convertNumber currencyCode="HUF" type="currency" />
+							</h:outputText>
+						</p:tooltip>
 					</p:column>
 
 					<p:column headerText="Összeg">
@@ -66,7 +73,14 @@
 
 					<p:column headerText="Cél számla">
 						<h:outputText id="addressee" value="#{transaction.addressee == null ? '' : (transaction.addressee.client.clientId.toString().concat('-').concat(transaction.addressee.sequenceNumber.toString()))}" />
-						<p:tooltip for="addressee" value="#{transaction.addressee}" showEffect="clip" hideEffect="explode" position="left" />
+						<p:tooltip for="addressee" value="" showEffect="puff" hideEffect="explode" position="left">
+							<h:outputText value="Számlaszám: #{transaction.addressee == null ? '' : (transaction.addressee.client.clientId.toString().concat('-').concat(transaction.addressee.sequenceNumber.toString()))}" /><br />
+							<h:outputText value="Számlatulajdonos: #{transaction.addressee == null ? '' : transaction.addressee.client.name}" /><br />
+							<h:outputText value="Egyenleg: " />
+							<h:outputText value="#{transaction.addressee == null ? 0.0 : transaction.addressee.balance}">
+								<f:convertNumber currencyCode="HUF" type="currency" />
+							</h:outputText>
+						</p:tooltip>
 					</p:column>
 				</p:dataTable>
 			</h:form>

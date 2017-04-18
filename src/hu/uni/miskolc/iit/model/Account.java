@@ -6,11 +6,9 @@ import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString(exclude = { "client" })
 @EqualsAndHashCode(of = { "accountId" })
 public class Account {
 
@@ -26,5 +24,10 @@ public class Account {
 	private Float balance;
 	
 	private Boolean closed = false;
+
+	@Override
+	public String toString() {
+		return String.format("Számlaszám: %s (Számlatulajdonos: %s)", (client.getClientId() + "-" + sequenceNumber), client.toString());
+	}
 	
 }

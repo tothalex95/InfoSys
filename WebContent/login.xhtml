@@ -8,26 +8,22 @@
 <h:head></h:head>
 
 <h:body>
-	<ui:composition template="templates/template.xhtml">
-		<ui:define name="content">
-		
-			<p:dialog id="dialog" header="Belépés" width="400" widgetVar="dlg"
-				visible="true" closable="false" draggable="false" resizable="false"
-				style="box-shadow: 7px 10px 5px #303030;">
-				<h:form>
-					<p:panelGrid columns="2" cellpadding="5" style="margin: 0 auto">
-						<h:outputLabel for="username" value="Felhasználó" />
-						<h:inputText id="username" value="#{auth.username}" />
-						<h:outputLabel for="password" value="Jelszó" />
-						<h:inputSecret id="password" value="#{auth.password}" />
-						<h:commandButton value="Belép" action="#{auth.login}" />
-						<h:messages globalOnly="true" />
-					</p:panelGrid>
-				</h:form>
-			</p:dialog>
-		
-		</ui:define>
-	</ui:composition>
+
+	<p:dialog id="dialog" header="Belépés" width="400" widgetVar="dlg"
+		visible="true" closable="false" draggable="false" resizable="false"
+		style="box-shadow: 7px 10px 5px #303030;">
+		<h:form>
+			<p:panelGrid columns="2" cellpadding="5" style="margin: 0 auto">
+				<h:outputLabel for="username" value="Felhasználó" />
+				<h:inputText id="username" value="#{auth.username}" />
+				<h:outputLabel for="password" value="Jelszó" />
+				<h:inputSecret id="password" value="#{auth.password}" />
+				<h:commandButton value="Belép" action="#{auth.login}" />
+				<h:messages globalOnly="true" />
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+
 </h:body>
 
 </html>

@@ -39,7 +39,12 @@
 
 					<p:column headerText="Számlatulajdonos">
 						<h:outputText id="client" value="#{account.client.clientId}" />
-						<p:tooltip for="client" value="#{account.client}" showEffect="clip" hideEffect="explode" position="right" />
+						<p:tooltip for="client" value="" showEffect="clip" hideEffect="explode" position="right">
+							<h:outputText value="Név: #{account.client.name}" /><br />
+							<h:outputText value="Személyi igazolványszám: #{account.client.personalId}" /><br />
+							<h:outputText value="Cím: #{account.client.address}" /><br />
+							<h:outputText value="Telefonszám: #{account.client.phoneNumber}" />
+						</p:tooltip>
 					</p:column>
 
 					<p:column headerText="Számlaszám">

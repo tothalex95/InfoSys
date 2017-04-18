@@ -10,11 +10,9 @@ import javax.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString(exclude = { "accounts" })
 @EqualsAndHashCode(of = { "clientId" })
 public class Client {
 
@@ -39,11 +37,16 @@ public class Client {
 	private Status status = Status.ACTIVE;
 	
 	private List<Account> accounts = new ArrayList<>();
-	
+
 	public enum Status {
 		
 		ACTIVE, DELETED;
 		
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Ügyfélazonosító: %d (Név: %s, személyi igazolványszám: %s)", clientId, name, personalId);
 	}
 	
 }
